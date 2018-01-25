@@ -8,6 +8,9 @@ This is an *experimental* plugin for Security Rules, which means you should
 __always__ validate these by hand before you decide to deploy these to a
 production environment.
 
+All support is handled through this repo, so if you've got a question or problem,
+[file an issue](https://github.com/firebase/protobuf-rules-gen/issues)!
+
 ## Introduction
 
 This is an experimental `protoc` plugin that generates [Firebase Rules for Cloud

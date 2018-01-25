@@ -13,9 +13,9 @@ All support is handled through this repo, so if you've got a question or problem
 
 ## Introduction
 
-This is an experimental `protoc` plugin that generates [Firebase Rules for Cloud
-Firestore](https://firebase.google.com/docs/firestore/security/overview) based
-on Google's Protocol Buffer format.
+This is an experimental [`protoc` plugin](https://developers.google.com/protocol-buffers/docs/reference/other)
+that generates [Firebase Rules for Cloud Firestore](https://firebase.google.com/docs/firestore/security/overview)
+based on [Google's Protocol Buffer format](https://developers.google.com/protocol-buffers/).
 
 This allows you to easily validate your data in a platform independent manner.
 

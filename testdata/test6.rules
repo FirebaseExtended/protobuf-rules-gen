@@ -1,0 +1,35 @@
+// @@START_GENERATED_FUNCTIONS@@
+function istutorial_PersonMessage(resource) {
+  return ((resource.keys().hasAll([]) && resource.size() == 0)) ||
+          (resource.keys().hasAll(['name']) && resource.size() == 1)) ||
+          (resource.keys().hasAll(['email']) && resource.size() == 1)) ||
+          (resource.keys().hasAll(['phone']) && resource.size() == 1)) ||
+          (resource.keys().hasAll(['starredWebsites']) && resource.size() == 1)) ||
+          (resource.keys().hasAll(['email','name']) && resource.size() == 2)) ||
+          (resource.keys().hasAll(['phone','name']) && resource.size() == 2)) ||
+          (resource.keys().hasAll(['starredWebsites','name']) && resource.size() == 2)) ||
+          (resource.keys().hasAll(['phone','email']) && resource.size() == 2)) ||
+          (resource.keys().hasAll(['starredWebsites','email']) && resource.size() == 2)) ||
+          (resource.keys().hasAll(['starredWebsites','phone']) && resource.size() == 2)) ||
+          (resource.keys().hasAll(['phone','email','name']) && resource.size() == 3)) ||
+          (resource.keys().hasAll(['starredWebsites','email','name']) && resource.size() == 3)) ||
+          (resource.keys().hasAll(['starredWebsites','phone','name']) && resource.size() == 3)) ||
+          (resource.keys().hasAll(['starredWebsites','phone','email']) && resource.size() == 3)) ||
+          (resource.keys().hasAll(['starredWebsites','phone','email','name']) && resource.size() == 4))) &&
+          ((resource.name == null) || (resource.name is string)) &&
+          ((resource.email == null) || (resource.email is string && (resource.email.matches('.*@domain\.com')))) &&
+          ((resource.phone == null) || (istutorial_Person_PhoneNumberMessage(resource.phone))) &&
+          ((resource.starredWebsites == null) || (resource.starredWebsites is list)) &&
+          (resource.keys().hasAny(['email', 'phone']));
+}
+function istutorial_Person_PhoneNumberMessage(resource) {
+  return ((resource.keys().hasAll([]))) &&
+          ((resource.number == null) || (resource.number is string)) &&
+          ((resource.type == null) || (istutorial_Person_PhoneTypeEnum(resource.type)));
+}
+function istutorial_Person_PhoneTypeEnum(resource) {
+  return resource == 0 ||
+          resource == 1 ||
+          resource == 2;
+}
+// @@END_GENERATED_FUNCTIONS@@

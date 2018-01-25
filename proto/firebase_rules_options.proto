@@ -1,0 +1,38 @@
+syntax = "proto2";
+
+package google.firebase.rules;
+
+import "google/protobuf/descriptor.proto";
+
+message RulesMessageOptions {
+  optional string validate = 1;
+  optional bool extra_properties = 2 [default = false];
+}
+
+message RulesFieldOptions {
+  optional string validate = 1;
+}
+
+message RulesFileOptions {
+  optional bool full_package_names = 1 [default = false];
+}
+
+message RulesEnumOptions {
+  optional bool numberic_values = 1 [default = false];
+}
+
+extend google.protobuf.MessageOptions {
+  optional RulesMessageOptions firebase_rules_message = 92493;
+}
+
+extend google.protobuf.FieldOptions {
+  optional RulesFieldOptions firebase_rules_field = 92493;
+}
+
+extend google.protobuf.FileOptions {
+  optional RulesFileOptions firebase_rules = 92493;
+}
+
+extend google.protobuf.EnumOptions {
+  optional RulesEnumOptions firebase_rules_enum = 92493;
+}

@@ -1,0 +1,12 @@
+syntax = "proto3";
+package example;
+
+message Example {
+  repeated string foo = 1;
+  map<string, int32> bar = 2;
+  oneof exclusive {
+    int32 bippity = 3;
+    bool boppity = 4;
+    float boo = 5;
+  }
+}

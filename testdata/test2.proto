@@ -1,0 +1,13 @@
+syntax = "proto2";
+
+package example;
+
+import "firebase_rules_options.proto";
+
+option (google.firebase.rules.firebase_rules).full_package_names = true;
+
+message Example {
+  required string foo = 1;
+  optional int32 bar = 2;
+  optional bool baz = 3;
+}

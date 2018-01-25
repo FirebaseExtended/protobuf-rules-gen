@@ -1,0 +1,8 @@
+syntax = "proto2";
+package example;
+
+message Example {
+  required string foo = 1;
+  optional int32 bar = 2;
+  optional bool baz = 3;
+}

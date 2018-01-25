@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+package example;
+option objc_class_prefix = "EXMPL";
+
+import "proto/firebase_rules_options.proto";
+
+// https://developers.google.com/protocol-buffers/docs/reference/java-generated#message
+option optimize_for = LITE_RUNTIME;
+// This is the default, but if it's set to true, generated functions take the
+// form of: is<package>_<message>Message()
+option (google.firebase.rules.firebase_rules).full_package_names = false;
+
+// A message that represents a simple user in our app.
+message Person {
+  // The first and last name of the person.
+  string name = 1;
+  // An example of extra validation to do if the field exists.
+  string email = 2 [(google.firebase.rules.firebase_rules_field).validate =
+                        "resource.email.matches('.*@domains\\.com')"];
+
+  // A nested Enum for the type of phone this person has registered.
+  enum PhoneType {
+    // If this is true, the expected value in firestore is the numeric value for
+    // this enum, otherwise it's the string representation of this enum's name.
+    option (google.firebase.rules.firebase_rules_enum).numberic_values = true;
+    MOBILE = 0;
+    HOME = 1;
+    WORK = 2;
+  }
+  // A nested type for a phone number.
+  message PhoneNumber {
+    string number = 1;
+    PhoneType type = 2;
+  }
+
+  PhoneNumber phone = 3;
+
+  // Additionally validate that either a phone or email is present.
+  option (google.firebase.rules.firebase_rules_message).validate =
+      "resource.phone != null || resource.email != null";
+
+  oneof transport_type {
+    Train train = 6;
+    Plane plane = 7;
+    Automobile auto = 8;
+  }
+}
+
+message Train {
+  repeated string stops = 1;
+}
+
+message Plane {
+  // Airport code -> City name
+  map<string, string> airport_codes = 1;
+}
+
+message Automobile {
+  bool full_gas_tank = 1;
+  bool sunglasses = 2;
+  float miles_per_gallon = 3;
+  // By default is false, if this is set to true then it is valid to set extra
+  // properties that don't exist in this proto.
+  option (google.firebase.rules.firebase_rules_message).extra_properties = true;
+}

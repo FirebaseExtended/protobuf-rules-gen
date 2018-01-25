@@ -1,0 +1,37 @@
+syntax = "proto3";
+package tutorial;
+
+import "firebase_rules_options.proto";
+
+option (google.firebase.rules.firebase_rules).full_package_names = true;
+
+message Person {
+  string name = 1;
+  string email = 2 [(google.firebase.rules.firebase_rules_field).validate =
+                        "resource.email.matches('.*@domain\\.com')"];
+
+  enum PhoneType {
+    option (google.firebase.rules.firebase_rules_enum).numberic_values = true;
+    MOBILE = 0;
+    HOME = 1;
+    WORK = 2;
+  }
+
+  message PhoneNumber {
+    string number = 1;
+    PhoneType type = 2;
+    option (google.firebase.rules.firebase_rules_message).extra_properties =
+        true;
+  }
+
+  PhoneNumber phone = 3;
+
+  // Currently, we can only check this is a list :(
+  repeated string starred_websites = 4;
+
+  // TODO(rockwood): Support timestamps
+
+  // This message must have either a phone or an email.
+  option (google.firebase.rules.firebase_rules_message).validate =
+      "resource.keys().hasAny(['email', 'phone'])";
+}

@@ -1,0 +1,15 @@
+// @@START_GENERATED_FUNCTIONS@@
+function is_ExampleMessage(resource) {
+  return ((resource.keys().hasAll([]) && resource.size() == 0)) ||
+          (resource.keys().hasAll(['foo']) && resource.size() == 1)) ||
+          (resource.keys().hasAll(['bar']) && resource.size() == 1)) ||
+          (resource.keys().hasAll(['baz']) && resource.size() == 1)) ||
+          (resource.keys().hasAll(['bar','foo']) && resource.size() == 2)) ||
+          (resource.keys().hasAll(['baz','foo']) && resource.size() == 2)) ||
+          (resource.keys().hasAll(['baz','bar']) && resource.size() == 2)) ||
+          (resource.keys().hasAll(['baz','bar','foo']) && resource.size() == 3))) &&
+          ((resource.foo == null) || (resource.foo is string)) &&
+          ((resource.bar == null) || (resource.bar is string)) &&
+          ((resource.baz == null) || (resource.baz is string));
+}
+// @@END_GENERATED_FUNCTIONS@@

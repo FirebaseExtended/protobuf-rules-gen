@@ -1,0 +1,13 @@
+syntax = "proto3";
+package example;
+
+message Example {
+  string foo = 1;
+  string bar = 2;
+  string baz = 3;
+}
+
+// Make sure that services are ignored.
+service ExampleService {
+  rpc DoExample(Example) returns (Example);
+}

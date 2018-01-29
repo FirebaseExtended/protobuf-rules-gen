@@ -48,7 +48,7 @@ that can be used to validate your incoming data.
 
 ```javascript
 // @@START_GENERATED_FUNCTIONS@@
-function is_PersonMessage(resource) {
+function isPersonMessage(resource) {
   return ((resource.keys().hasAll(['name']) && resource.size() == 1)) ||
           (resource.keys().hasAll(['name','email']) && resource.size() == 2)) ||
           (resource.keys().hasAll(['name','phone']) && resource.size() == 2)) ||
@@ -57,7 +57,7 @@ function is_PersonMessage(resource) {
           ((resource.email == null) || (resource.email is string)) &&
           ((resource.phone == null) || (is_Person_PhoneNumberMessage(resource.phone)));
 }
-function is_Person_PhoneNumberMessage(resource) {
+function isPerson_PhoneNumberMessage(resource) {
   return ((resource.keys().hasAll([]) && resource.size() == 0)) ||
           (resource.keys().hasAll(['number']) && resource.size() == 1)) ||
           (resource.keys().hasAll(['type']) && resource.size() == 1)) ||
@@ -65,7 +65,7 @@ function is_Person_PhoneNumberMessage(resource) {
           ((resource.number == null) || (resource.number is string)) &&
           ((resource.type == null) || (is_Person_PhoneTypeEnum(resource.type)));
 }
-function is_Person_PhoneTypeEnum(resource) {
+function isPerson_PhoneTypeEnum(resource) {
   return resource == "MOBILE" ||
           resource == "HOME" ||
           resource == "WORK";

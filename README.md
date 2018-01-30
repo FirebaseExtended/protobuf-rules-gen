@@ -1,6 +1,6 @@
 # Firebase Rules Protobuf Validation
 
-[//]: # (Build status here...)
+[![Build Status](https://travis-ci.org/firebase/protobuf-rules-gen.svg?branch=master)](https://travis-ci.org/firebase/protobuf-rules-gen)
 
 ### Quick Note
 
@@ -8,11 +8,14 @@ This is an *experimental* plugin for Security Rules, which means you should
 __always__ validate these by hand before you decide to deploy these to a
 production environment.
 
+All support is handled through this repo, so if you've got a question or problem,
+[file an issue](https://github.com/firebase/protobuf-rules-gen/issues)!
+
 ## Introduction
 
-This is an experimental `protoc` plugin that generates [Firebase Rules for Cloud
-Firestore](https://firebase.google.com/docs/firestore/security/overview) based
-on Google's Protocol Buffer format.
+This is an experimental [`protoc` plugin](https://developers.google.com/protocol-buffers/docs/reference/other)
+that generates [Firebase Rules for Cloud Firestore](https://firebase.google.com/docs/firestore/security/overview)
+based on [Google's Protocol Buffer format](https://developers.google.com/protocol-buffers/).
 
 This allows you to easily validate your data in a platform independent manner.
 
@@ -86,9 +89,15 @@ service cloud.firestore {
 
 ## Usage
 
-```
-TODO(rockwood): Fill this out once there is a release and prebuilt binaries
-```
+To use this `protoc` plugin once you have your protocol buffers defined, follow these steps:
+
+1. Make sure to install the latest version of [`protoc`](https://github.com/google/protobuf#protocol-compiler-installation)
+2. Download the latest release from [GitHub](https://github.com/firebase/protobuf-rules-gen/releases)
+3. Either put the plugin binary on your `$PATH` or use the `--plugin=protoc-gen-firebase_rules=./path/to/protoc-gen-firebase_rules` option
+4. Invoke the `protoc` tool using the `--firebase_rules_out=./directory` flag to output your `firestore.rules` file with generated functions
+
+If you run into trouble feel free to check out our [`example_usage.sh`](https://github.com/firebase/protobuf-rules-gen/blob/master/example_usage.sh) script or [file an issue](https://github.com/firebase/protobuf-rules-gen/issues)
+
 
 ## Advanced Usage
 
@@ -128,7 +137,7 @@ message Person {
   // Currently, we can only check this is a list :(
   repeated string starred_websites = 4;
 
-  // TODO(rockwood): Support timestamps
+  // TODO(rockwotj): Support timestamps
 
   // This message must have either a phone or an email.
   option (google.firebase.rules.firebase_rules_message).validate =
@@ -199,7 +208,7 @@ in `example_usage.sh`. This script can be run from the command line.
 
 ## Authors
 
-`proto-gen-firebase-rules` was initiated with ❤️️ by [Tyler
+`protobuf-rules-gen` was initiated with ❤️️ by [Tyler
 Rockwood](https://github.com/rockwotj).
 
 ## Disclaimer

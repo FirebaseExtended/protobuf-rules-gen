@@ -26,6 +26,7 @@ cc_library(
 cc_binary(
     name = "protoc-gen-firebase_rules",
     srcs = ["main.cc"],
+    linkstatic = 1,
     visibility = ["//visibility:public"],
     deps = [
         ":generator",

@@ -31,5 +31,9 @@ script:
   - bazel build //...
   - bazel test //...
 
+after_failure:
+  - cat bazel-testlogs/**/*.log # Print test log on failure.
+
+
 notifications:
   email: false

@@ -33,21 +33,23 @@ namespace {
 
 struct RulesContext {};
 
-std::string SanitizeName(std::string name) {
-  for (size_t i = 0; i < name.size(); ++i) {
-    if (name[i] == '.') {
-      name[i] = '_';
-    }
-  }
-  return name;
-}
-
-std::string StripPrefix(std::string str, const std::string &prefix) {
+std::string StripPrefix(const std::string &str, const std::string &prefix) {
   if (prefix.size() <= str.size() && str.substr(0, prefix.size()) == prefix) {
     return str.substr(prefix.size());
   } else {
     return str;
   }
+}
+
+std::string SanitizeName(const std::string &name) {
+  // Strip leading '.' characters.
+  std::string sanitized_name = StripPrefix(name, ".");
+  for (size_t i = 0; i < sanitized_name.size(); ++i) {
+    if (sanitized_name[i] == '.') {
+      sanitized_name[i] = '_';
+    }
+  }
+  return sanitized_name;
 }
 
 void ReturnIndent(protobuf::io::Printer &printer) {

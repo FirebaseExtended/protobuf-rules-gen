@@ -1,10 +1,10 @@
 // @@START_GENERATED_FUNCTIONS@@
-function is_ExampleWithStringsEnum(resource) {
+function isExampleWithStringsEnum(resource) {
   return resource == "FOO" ||
           resource == "BAR" ||
           resource == "BAZ";
 }
-function is_ExampleWithNumbersEnum(resource) {
+function isExampleWithNumbersEnum(resource) {
   return resource == 0 ||
           resource == 1 ||
           resource == 2;

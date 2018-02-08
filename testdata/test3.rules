@@ -1,8 +1,8 @@
 // @@START_GENERATED_FUNCTIONS@@
 function isExampleWithStringsEnum(resource) {
-  return resource == "FOO" ||
-          resource == "BAR" ||
-          resource == "BAZ";
+  return resource == 'FOO' ||
+          resource == 'BAR' ||
+          resource == 'BAZ';
 }
 function isExampleWithNumbersEnum(resource) {
   return resource == 0 ||

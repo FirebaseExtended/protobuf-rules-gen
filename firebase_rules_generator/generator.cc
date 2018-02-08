@@ -302,16 +302,6 @@ bool RulesGenerator::GenerateMessage(const protobuf::Descriptor *message,
       printer.Print(" &&\n");
     }
   }
-  // Don't forget oneofs!
-  if (message->oneof_decl_count() > 0) printer.Print(" &&\n");
-  for (int i = 0; i < message->oneof_decl_count(); ++i) {
-    if (!GenerateOneOf(message->oneof_decl(i), printer, error)) {
-      return false;
-    }
-    if (!IsLastIteration(i, message->oneof_decl_count())) {
-      printer.Print(" &&\n");
-    }
-  }
   if (options.has_validate()) {
     printer.Print(" &&\n($validate$)", "validate", options.validate());
   }
@@ -349,7 +339,7 @@ bool RulesGenerator::GenerateEnum(const protobuf::EnumDescriptor *enumeration,
       printer.Print("resource == $value$", "value",
                     std::to_string(enum_value->number()));
     } else {
-      printer.Print("resource == \"$value$\"", "value", enum_value->name());
+      printer.Print("resource == '$value$'", "value", enum_value->name());
     }
     if (!IsLastIteration(i, enumeration->value_count())) {
       printer.Print(" ||\n");
@@ -368,7 +358,8 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
   const auto &options = field->options().GetExtension(firebase_rules_field);
   printer.Print("((");
   if (field->is_optional() || field->is_repeated()) {
-    printer.Print("resource.$name$ == null) || (", "name", field->json_name());
+    printer.Print("!resource.keys().hasAny(['$name$'])) || (", "name",
+                  field->json_name());
   }
   if (field->is_repeated() && !field->is_map()) {
     // We should validate the type inside the list, but currently we cannot

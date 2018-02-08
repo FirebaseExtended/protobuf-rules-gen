@@ -8,8 +8,8 @@ function isExampleMessage(resource) {
           (resource.keys().hasAll(['baz','foo']) && resource.size() == 2) ||
           (resource.keys().hasAll(['baz','bar']) && resource.size() == 2) ||
           (resource.keys().hasAll(['baz','bar','foo']) && resource.size() == 3)) &&
-          ((resource.foo == null) || (resource.foo is string)) &&
-          ((resource.bar == null) || (resource.bar is string)) &&
-          ((resource.baz == null) || (resource.baz is string));
+          ((!resource.keys().hasAny(['foo'])) || (resource.foo is string)) &&
+          ((!resource.keys().hasAny(['bar'])) || (resource.bar is string)) &&
+          ((!resource.keys().hasAny(['baz'])) || (resource.baz is string));
 }
 // @@END_GENERATED_FUNCTIONS@@

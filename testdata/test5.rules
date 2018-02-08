@@ -5,20 +5,20 @@ function isPersonMessage(resource) {
           (resource.keys().hasAll(['name','phone']) && resource.size() == 2) ||
           (resource.keys().hasAll(['name','phone','email']) && resource.size() == 3)) &&
           ((resource.name is string)) &&
-          ((resource.email == null) || (resource.email is string)) &&
-          ((resource.phone == null) || (isPerson_PhoneNumberMessage(resource.phone)));
+          ((!resource.keys().hasAny(['email'])) || (resource.email is string)) &&
+          ((!resource.keys().hasAny(['phone'])) || (isPerson_PhoneNumberMessage(resource.phone)));
 }
 function isPerson_PhoneNumberMessage(resource) {
   return ((resource.keys().hasAll([]) && resource.size() == 0) ||
           (resource.keys().hasAll(['number']) && resource.size() == 1) ||
           (resource.keys().hasAll(['type']) && resource.size() == 1) ||
           (resource.keys().hasAll(['type','number']) && resource.size() == 2)) &&
-          ((resource.number == null) || (resource.number is string)) &&
-          ((resource.type == null) || (isPerson_PhoneTypeEnum(resource.type)));
+          ((!resource.keys().hasAny(['number'])) || (resource.number is string)) &&
+          ((!resource.keys().hasAny(['type'])) || (isPerson_PhoneTypeEnum(resource.type)));
 }
 function isPerson_PhoneTypeEnum(resource) {
-  return resource == "MOBILE" ||
-          resource == "HOME" ||
-          resource == "WORK";
+  return resource == 'MOBILE' ||
+          resource == 'HOME' ||
+          resource == 'WORK';
 }
 // @@END_GENERATED_FUNCTIONS@@

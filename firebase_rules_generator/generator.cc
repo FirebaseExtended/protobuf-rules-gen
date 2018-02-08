@@ -428,36 +428,6 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
   return true;
 }
 
-bool RulesGenerator::GenerateOneOf(const protobuf::OneofDescriptor *oneof,
-                                   protobuf::io::Printer &printer,
-                                   std::string *error) const {
-  if (oneof->field_count() <= 1) {
-    *error = "Please use oneofs that have more than a single element!";
-    return false;
-  }
-  std::vector<std::string> one_of_names;
-  for (int i = 0; i < oneof->field_count(); ++i) {
-    one_of_names.push_back(oneof->field(i)->json_name());
-  }
-  printer.Print("(");
-  for (size_t i = 0; i < one_of_names.size(); ++i) {
-    printer.Print("(");
-    const auto &field = one_of_names[i];
-    printer.Print("resource.$name$ != null", "name", field);
-    const auto &non_existent_fields = AllOtherFields(one_of_names, field);
-    for (size_t j = 0; j < non_existent_fields.size(); ++j) {
-      printer.Print(" && resource.$name$ == null", "name",
-                    non_existent_fields[j]);
-    }
-    printer.Print(")");
-    if (!IsLastIteration(i, one_of_names.size())) {
-      printer.Print(" ||\n");
-    }
-  }
-  printer.Print(")");
-  return true;
-}
-
 bool RulesGenerator::GenerateMap(const protobuf::FieldDescriptor *map_field,
                                  protobuf::io::Printer &printer,
                                  std::string *error) const {

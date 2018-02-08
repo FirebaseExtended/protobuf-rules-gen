@@ -205,17 +205,6 @@ std::vector<std::vector<std::string>> AllFieldCombinations(
   return combos;
 }
 
-std::vector<std::string> AllOtherFields(
-    const std::vector<std::string> &all_fields, const std::string &exclusion) {
-  std::vector<std::string> fields;
-  for (const auto &field : all_fields) {
-    if (field != exclusion) {
-      fields.push_back(field);
-    }
-  }
-  return fields;
-}
-
 template <typename S>
 bool IsLastIteration(S idx, S size) {
   return idx + 1 >= size;

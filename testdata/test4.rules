@@ -16,13 +16,10 @@ function isExampleMessage(resource) {
           (resource.keys().hasAll(['bippity','bar','foo']) && resource.size() == 3) ||
           (resource.keys().hasAll(['boppity','bar','foo']) && resource.size() == 3) ||
           (resource.keys().hasAll(['boo','bar','foo']) && resource.size() == 3)) &&
-          ((resource.foo == null) || (resource.foo is list)) &&
-          ((resource.bar == null) || (resource.bar is map)) &&
-          ((resource.bippity == null) || (resource.bippity is int)) &&
-          ((resource.boppity == null) || (resource.boppity is bool)) &&
-          ((resource.boo == null) || (resource.boo is float)) &&
-          ((resource.bippity != null && resource.boppity == null && resource.boo == null) ||
-          (resource.boppity != null && resource.bippity == null && resource.boo == null) ||
-          (resource.boo != null && resource.bippity == null && resource.boppity == null));
+          ((!resource.keys().hasAny(['foo'])) || (resource.foo is list)) &&
+          ((!resource.keys().hasAny(['bar'])) || (resource.bar is map)) &&
+          ((!resource.keys().hasAny(['bippity'])) || (resource.bippity is int)) &&
+          ((!resource.keys().hasAny(['boppity'])) || (resource.boppity is bool)) &&
+          ((!resource.keys().hasAny(['boo'])) || (resource.boo is float));
 }
 // @@END_GENERATED_FUNCTIONS@@

@@ -302,16 +302,6 @@ bool RulesGenerator::GenerateMessage(const protobuf::Descriptor *message,
       printer.Print(" &&\n");
     }
   }
-  // Don't forget oneofs!
-  if (message->oneof_decl_count() > 0) printer.Print(" &&\n");
-  for (int i = 0; i < message->oneof_decl_count(); ++i) {
-    if (!GenerateOneOf(message->oneof_decl(i), printer, error)) {
-      return false;
-    }
-    if (!IsLastIteration(i, message->oneof_decl_count())) {
-      printer.Print(" &&\n");
-    }
-  }
   if (options.has_validate()) {
     printer.Print(" &&\n($validate$)", "validate", options.validate());
   }
@@ -349,7 +339,7 @@ bool RulesGenerator::GenerateEnum(const protobuf::EnumDescriptor *enumeration,
       printer.Print("resource == $value$", "value",
                     std::to_string(enum_value->number()));
     } else {
-      printer.Print("resource == \"$value$\"", "value", enum_value->name());
+      printer.Print("resource == '$value$'", "value", enum_value->name());
     }
     if (!IsLastIteration(i, enumeration->value_count())) {
       printer.Print(" ||\n");
@@ -368,7 +358,8 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
   const auto &options = field->options().GetExtension(firebase_rules_field);
   printer.Print("((");
   if (field->is_optional() || field->is_repeated()) {
-    printer.Print("resource.$name$ == null) || (", "name", field->json_name());
+    printer.Print("!resource.keys().hasAny(['$name$'])) || (", "name",
+                  field->json_name());
   }
   if (field->is_repeated() && !field->is_map()) {
     // We should validate the type inside the list, but currently we cannot
@@ -434,36 +425,6 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
     printer.Print(" && ($validate$)", "validate", options.validate());
   }
   printer.Print("))");
-  return true;
-}
-
-bool RulesGenerator::GenerateOneOf(const protobuf::OneofDescriptor *oneof,
-                                   protobuf::io::Printer &printer,
-                                   std::string *error) const {
-  if (oneof->field_count() <= 1) {
-    *error = "Please use oneofs that have more than a single element!";
-    return false;
-  }
-  std::vector<std::string> one_of_names;
-  for (int i = 0; i < oneof->field_count(); ++i) {
-    one_of_names.push_back(oneof->field(i)->json_name());
-  }
-  printer.Print("(");
-  for (size_t i = 0; i < one_of_names.size(); ++i) {
-    printer.Print("(");
-    const auto &field = one_of_names[i];
-    printer.Print("resource.$name$ != null", "name", field);
-    const auto &non_existent_fields = AllOtherFields(one_of_names, field);
-    for (size_t j = 0; j < non_existent_fields.size(); ++j) {
-      printer.Print(" && resource.$name$ == null", "name",
-                    non_existent_fields[j]);
-    }
-    printer.Print(")");
-    if (!IsLastIteration(i, one_of_names.size())) {
-      printer.Print(" ||\n");
-    }
-  }
-  printer.Print(")");
   return true;
 }
 

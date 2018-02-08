@@ -5,7 +5,7 @@ function isexample_ExampleMessage(resource) {
           (resource.keys().hasAll(['foo','baz']) && resource.size() == 2) ||
           (resource.keys().hasAll(['foo','baz','bar']) && resource.size() == 3)) &&
           ((resource.foo is string)) &&
-          ((resource.bar == null) || (resource.bar is int)) &&
-          ((resource.baz == null) || (resource.baz is bool));
+          ((!resource.keys().hasAny(['bar'])) || (resource.bar is int)) &&
+          ((!resource.keys().hasAny(['baz'])) || (resource.baz is bool));
 }
 // @@END_GENERATED_FUNCTIONS@@

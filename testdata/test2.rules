@@ -1,9 +1,9 @@
 // @@START_GENERATED_FUNCTIONS@@
 function isexample_ExampleMessage(resource) {
-  return ((resource.keys().hasAll(['foo']) && resource.size() == 1)) ||
-          (resource.keys().hasAll(['foo','bar']) && resource.size() == 2)) ||
-          (resource.keys().hasAll(['foo','baz']) && resource.size() == 2)) ||
-          (resource.keys().hasAll(['foo','baz','bar']) && resource.size() == 3))) &&
+  return ((resource.keys().hasAll(['foo']) && resource.size() == 1) ||
+          (resource.keys().hasAll(['foo','bar']) && resource.size() == 2) ||
+          (resource.keys().hasAll(['foo','baz']) && resource.size() == 2) ||
+          (resource.keys().hasAll(['foo','baz','bar']) && resource.size() == 3)) &&
           ((resource.foo is string)) &&
           ((resource.bar == null) || (resource.bar is int)) &&
           ((resource.baz == null) || (resource.baz is bool));

@@ -283,8 +283,9 @@ bool RulesGenerator::GenerateMessage(const protobuf::Descriptor *message,
     if (!options.has_extra_properties()) {
       printer.Print(" && resource.size() == $count$)", "count",
                     std::to_string(combo.size()));
+    } else {
+      printer.Print(")");
     }
-    printer.Print(")");
     if (IsLastIteration(i, combinations.size())) {
       printer.Print(")");
     } else {

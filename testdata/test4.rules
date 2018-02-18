@@ -18,7 +18,7 @@ function isExampleMessage(resource) {
           (resource.keys().hasAll(['boo','bar','foo']) && resource.size() == 3)) &&
           ((!resource.keys().hasAny(['foo'])) || (resource.foo is list)) &&
           ((!resource.keys().hasAny(['bar'])) || (resource.bar is map)) &&
-          ((!resource.keys().hasAny(['bippity'])) || (resource.bippity is int)) &&
+          ((!resource.keys().hasAny(['bippity'])) || (resource.bippity is int && resource.bippity >= -2147483648 && resource.bippity <= 2147483647)) &&
           ((!resource.keys().hasAny(['boppity'])) || (resource.boppity is bool)) &&
           ((!resource.keys().hasAny(['boo'])) || (resource.boo is float));
 }

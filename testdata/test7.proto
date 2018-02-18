@@ -1,0 +1,21 @@
+syntax = "proto3";
+package limits;
+
+import "firebase_rules_options.proto";
+
+// Test limits for all types of integers.
+// TODO(rockwood): Also test doubles.
+message NumericLimits {
+  int32 a = 1;
+  int64 b = 2;
+  uint32 c = 3;
+  uint64 d = 4;
+  sint32 e = 5;
+  sint64 f = 6;
+  fixed32 g = 7;
+  fixed64 h = 8;
+  sfixed32 i = 9;
+  sfixed64 j = 10;
+  // We only do this to make the resulting file smaller.
+  option (google.firebase.rules.firebase_rules_message).extra_properties = true;
+}

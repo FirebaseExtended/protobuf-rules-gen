@@ -14,10 +14,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import sys
-import os
 from os import path
+import difflib
+import os
 import subprocess
+import sys
 
 
 def check_proto_file(filename):
@@ -35,8 +36,15 @@ def read_file(filename):
         return f.read()
 
 
-def assert_equals(msg, expected, actual):
-    assert expected == actual, msg + ": expected " + expected + " to equal " + actual
+def check_rules_output(test_file, expected, actual):
+    if expected != actual:
+        for line in difflib.unified_diff(
+                expected.splitlines(True),
+                actual.splitlines(True),
+                fromfile=test_file,
+                tofile="firestore.rules"):
+            sys.stderr.write(line)
+        sys.exit(1)
 
 
 output_dir = os.environ["TEST_UNDECLARED_OUTPUTS_DIR"]
@@ -64,7 +72,7 @@ def run_testcase(proto_file, output):
         stderr=sys.stderr)
     actual = read_file(output_dir + "/firestore.rules")
     expected = read_file(output)
-    assert_equals(test_file, expected, actual)
+    check_rules_output(path.basename(output), expected, actual)
 
 
 # Testcases should be <name>.proto as the input and <name>.rules as the output.

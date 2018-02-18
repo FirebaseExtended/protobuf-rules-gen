@@ -18,6 +18,7 @@
 #include <google/protobuf/stubs/strutil.h>
 #include <algorithm>
 #include <iterator>
+#include <limits>
 #include <string>
 
 #include "proto/firebase_rules_options.pb.h"
@@ -371,22 +372,54 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
         vars.insert({"type", "float"});
         printer.Print(vars, "resource.$name$ is $type$");
         break;
-      case protobuf::FieldDescriptor::TYPE_INT64:
-      case protobuf::FieldDescriptor::TYPE_UINT64:
-      case protobuf::FieldDescriptor::TYPE_SINT64:
-      case protobuf::FieldDescriptor::TYPE_FIXED64:
-      case protobuf::FieldDescriptor::TYPE_SFIXED64:
-      // TODO(rockwood): Validate numberic ranges.
-      // TODO(rockwood): UINT64? They could be out of range (int == INT64).
+      // TODO(rockwood): According to the following guide, large numbers
+      // can be strings as well. Can we handle this?
       // https://developers.google.com/protocol-buffers/docs/proto3#json
-      // this can be strings as well.
+      case protobuf::FieldDescriptor::TYPE_INT64:
+      case protobuf::FieldDescriptor::TYPE_SINT64:
+      case protobuf::FieldDescriptor::TYPE_SFIXED64:
+        vars.insert({"type", "int"});
+        vars.insert(
+            {"min", std::to_string(std::numeric_limits<int64_t>::min())});
+        vars.insert(
+            {"max", std::to_string(std::numeric_limits<int64_t>::max())});
+        printer.Print(vars,
+                      "resource.$name$ is $type$ && resource.$name$ >= $min$ "
+                      "&& resource.$name$ <= $max$");
+        break;
+      case protobuf::FieldDescriptor::TYPE_UINT64:
+      case protobuf::FieldDescriptor::TYPE_FIXED64:
+        vars.insert({"type", "int"});
+        vars.insert(
+            {"min", std::to_string(std::numeric_limits<uint64_t>::min())});
+        vars.insert(
+            {"max", std::to_string(std::numeric_limits<uint64_t>::max())});
+        printer.Print(vars,
+                      "resource.$name$ is $type$ && resource.$name$ >= $min$ "
+                      "&& resource.$name$ <= $max$");
+        break;
       case protobuf::FieldDescriptor::TYPE_INT32:
+      case protobuf::FieldDescriptor::TYPE_SINT32:
+      case protobuf::FieldDescriptor::TYPE_SFIXED32:
+        vars.insert({"type", "int"});
+        vars.insert(
+            {"min", std::to_string(std::numeric_limits<int32_t>::min())});
+        vars.insert(
+            {"max", std::to_string(std::numeric_limits<int32_t>::max())});
+        printer.Print(vars,
+                      "resource.$name$ is $type$ && resource.$name$ >= $min$ "
+                      "&& resource.$name$ <= $max$");
+        break;
       case protobuf::FieldDescriptor::TYPE_UINT32:
       case protobuf::FieldDescriptor::TYPE_FIXED32:
-      case protobuf::FieldDescriptor::TYPE_SFIXED32:
-      case protobuf::FieldDescriptor::TYPE_SINT32:
         vars.insert({"type", "int"});
-        printer.Print(vars, "resource.$name$ is $type$");
+        vars.insert(
+            {"min", std::to_string(std::numeric_limits<uint32_t>::min())});
+        vars.insert(
+            {"max", std::to_string(std::numeric_limits<uint32_t>::max())});
+        printer.Print(vars,
+                      "resource.$name$ is $type$ && resource.$name$ >= $min$ "
+                      "&& resource.$name$ <= $max$");
         break;
       case protobuf::FieldDescriptor::TYPE_BOOL:
         vars.insert({"type", "bool"});

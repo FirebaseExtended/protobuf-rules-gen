@@ -372,9 +372,6 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
         vars.insert({"type", "float"});
         printer.Print(vars, "resource.$name$ is $type$");
         break;
-      // TODO(rockwood): According to the following guide, large numbers
-      // can be strings as well. Can we handle this?
-      // https://developers.google.com/protocol-buffers/docs/proto3#json
       case protobuf::FieldDescriptor::TYPE_INT64:
       case protobuf::FieldDescriptor::TYPE_SINT64:
       case protobuf::FieldDescriptor::TYPE_SFIXED64:
@@ -392,8 +389,12 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
         vars.insert({"type", "int"});
         vars.insert(
             {"min", std::to_string(std::numeric_limits<uint64_t>::min())});
+        // TODO(rockwood): According to the following guide, large numbers
+        // can be strings as well. Can we handle this?
+        // https://developers.google.com/protocol-buffers/docs/proto3#json
+        // Anything over max int64 can't be represented in JSON.
         vars.insert(
-            {"max", std::to_string(std::numeric_limits<uint64_t>::max())});
+            {"max", std::to_string(std::numeric_limits<int64_t>::max())});
         printer.Print(vars,
                       "resource.$name$ is $type$ && resource.$name$ >= $min$ "
                       "&& resource.$name$ <= $max$");

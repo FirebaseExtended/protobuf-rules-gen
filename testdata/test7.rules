@@ -4,11 +4,11 @@ function isNumericLimitsMessage(resource) {
           ((!resource.keys().hasAny(['a'])) || (resource.a is int && resource.a >= -2147483648 && resource.a <= 2147483647)) &&
           ((!resource.keys().hasAny(['b'])) || (resource.b is int && resource.b >= -9223372036854775808 && resource.b <= 9223372036854775807)) &&
           ((!resource.keys().hasAny(['c'])) || (resource.c is int && resource.c >= 0 && resource.c <= 4294967295)) &&
-          ((!resource.keys().hasAny(['d'])) || (resource.d is int && resource.d >= 0 && resource.d <= 18446744073709551615)) &&
+          ((!resource.keys().hasAny(['d'])) || (resource.d is int && resource.d >= 0 && resource.d <= 9223372036854775807)) &&
           ((!resource.keys().hasAny(['e'])) || (resource.e is int && resource.e >= -2147483648 && resource.e <= 2147483647)) &&
           ((!resource.keys().hasAny(['f'])) || (resource.f is int && resource.f >= -9223372036854775808 && resource.f <= 9223372036854775807)) &&
           ((!resource.keys().hasAny(['g'])) || (resource.g is int && resource.g >= 0 && resource.g <= 4294967295)) &&
-          ((!resource.keys().hasAny(['h'])) || (resource.h is int && resource.h >= 0 && resource.h <= 18446744073709551615)) &&
+          ((!resource.keys().hasAny(['h'])) || (resource.h is int && resource.h >= 0 && resource.h <= 9223372036854775807)) &&
           ((!resource.keys().hasAny(['i'])) || (resource.i is int && resource.i >= -2147483648 && resource.i <= 2147483647)) &&
           ((!resource.keys().hasAny(['j'])) || (resource.j is int && resource.j >= -9223372036854775808 && resource.j <= 9223372036854775807));
 }

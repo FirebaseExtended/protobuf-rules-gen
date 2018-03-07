@@ -17,8 +17,8 @@ function isPerson_PhoneNumberMessage(resource) {
           ((!resource.keys().hasAny(['type'])) || (isPerson_PhoneTypeEnum(resource.type)));
 }
 function isPerson_PhoneTypeEnum(resource) {
-  return resource == 'MOBILE' ||
-          resource == 'HOME' ||
-          resource == 'WORK';
+  return resource == 0 ||
+          resource == 1 ||
+          resource == 2;
 }
 // @@END_GENERATED_FUNCTIONS@@

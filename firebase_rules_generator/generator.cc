@@ -325,11 +325,11 @@ bool RulesGenerator::GenerateEnum(const protobuf::EnumDescriptor *enumeration,
   ReturnIndent(printer);
   for (int i = 0; i < enumeration->value_count(); ++i) {
     const auto *enum_value = enumeration->value(i);
-    if (options.has_numberic_values()) {
+    if (options.has_string_values()) {
+      printer.Print("resource == '$value$'", "value", enum_value->name());
+    } else {
       printer.Print("resource == $value$", "value",
                     std::to_string(enum_value->number()));
-    } else {
-      printer.Print("resource == '$value$'", "value", enum_value->name());
     }
     if (!IsLastIteration(i, enumeration->value_count())) {
       printer.Print(" ||\n");

@@ -1,12 +1,12 @@
 // @@START_GENERATED_FUNCTIONS@@
-function isExampleWithStringsEnum(resource) {
-  return resource == 'FOO' ||
-          resource == 'BAR' ||
-          resource == 'BAZ';
-}
 function isExampleWithNumbersEnum(resource) {
   return resource == 0 ||
           resource == 1 ||
           resource == 2;
+}
+function isExampleWithStringsEnum(resource) {
+  return resource == 'BIPPITY' ||
+          resource == 'BOPPITY' ||
+          resource == 'BOO';
 }
 // @@END_GENERATED_FUNCTIONS@@

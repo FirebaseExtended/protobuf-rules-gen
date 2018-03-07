@@ -18,7 +18,7 @@ message RulesFileOptions {
 }
 
 message RulesEnumOptions {
-  optional bool numberic_values = 1 [default = false];
+  optional bool string_values = 1 [default = false];
 }
 
 extend google.protobuf.MessageOptions {

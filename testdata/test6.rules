@@ -28,8 +28,8 @@ function istutorial_Person_PhoneNumberMessage(resource) {
           ((!resource.keys().hasAny(['type'])) || (istutorial_Person_PhoneTypeEnum(resource.type)));
 }
 function istutorial_Person_PhoneTypeEnum(resource) {
-  return resource == 0 ||
-          resource == 1 ||
-          resource == 2;
+  return resource == 'MOBILE' ||
+          resource == 'HOME' ||
+          resource == 'WORK';
 }
 // @@END_GENERATED_FUNCTIONS@@

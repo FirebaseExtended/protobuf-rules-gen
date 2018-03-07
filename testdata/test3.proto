@@ -4,14 +4,14 @@ package example;
 
 import "firebase_rules_options.proto";
 
-enum ExampleWithStrings {
+enum ExampleWithNumbers {
   FOO = 0;
   BAR = 1;
   BAZ = 2;
 }
 
-enum ExampleWithNumbers {
-  option (google.firebase.rules.firebase_rules_enum).numberic_values = true;
+enum ExampleWithStrings {
+  option (google.firebase.rules.firebase_rules_enum).string_values = true;
   BIPPITY = 0;
   BOPPITY = 1;
   BOO = 2;

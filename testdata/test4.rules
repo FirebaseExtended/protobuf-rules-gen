@@ -1,21 +1,9 @@
 // @@START_GENERATED_FUNCTIONS@@
 function isExampleMessage(resource) {
-  return ((resource.keys().hasAll([]) && resource.size() == 0) ||
-          (resource.keys().hasAll(['foo']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['bar']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['bippity']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['boppity']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['boo']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['bar','foo']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['bippity','foo']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['boppity','foo']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['boo','foo']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['bippity','bar']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['boppity','bar']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['boo','bar']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['bippity','bar','foo']) && resource.size() == 3) ||
-          (resource.keys().hasAll(['boppity','bar','foo']) && resource.size() == 3) ||
-          (resource.keys().hasAll(['boo','bar','foo']) && resource.size() == 3)) &&
+  return resource.keys().hasAll([]) &&
+          (resource.keys().hasOnly(['bippity','bar','foo']) ||
+          resource.keys().hasOnly(['boppity','bar','foo']) ||
+          resource.keys().hasOnly(['boo','bar','foo'])) &&
           ((!resource.keys().hasAny(['foo'])) || (resource.foo is list)) &&
           ((!resource.keys().hasAny(['bar'])) || (resource.bar is map)) &&
           ((!resource.keys().hasAny(['bippity'])) || (resource.bippity is int && resource.bippity >= -2147483648 && resource.bippity <= 2147483647)) &&

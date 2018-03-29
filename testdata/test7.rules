@@ -1,6 +1,6 @@
 // @@START_GENERATED_FUNCTIONS@@
 function isNumericLimitsMessage(resource) {
-  return ((resource.keys().hasAll([]))) &&
+  return resource.keys().hasAll([]) &&
           ((!resource.keys().hasAny(['a'])) || (resource.a is int && resource.a >= -2147483648 && resource.a <= 2147483647)) &&
           ((!resource.keys().hasAny(['b'])) || (resource.b is int && resource.b >= -9223372036854775808 && resource.b <= 9223372036854775807)) &&
           ((!resource.keys().hasAny(['c'])) || (resource.c is int && resource.c >= 0 && resource.c <= 4294967295)) &&

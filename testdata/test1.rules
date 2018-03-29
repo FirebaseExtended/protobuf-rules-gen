@@ -1,9 +1,7 @@
 // @@START_GENERATED_FUNCTIONS@@
 function isExampleMessage(resource) {
-  return ((resource.keys().hasAll(['foo']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['foo','bar']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['foo','baz']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['foo','baz','bar']) && resource.size() == 3)) &&
+  return resource.keys().hasAll(['foo']) &&
+          (resource.keys().hasOnly(['foo','baz','bar'])) &&
           ((resource.foo is string)) &&
           ((!resource.keys().hasAny(['bar'])) || (resource.bar is int && resource.bar >= -2147483648 && resource.bar <= 2147483647)) &&
           ((!resource.keys().hasAny(['baz'])) || (resource.baz is bool));

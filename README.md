@@ -56,26 +56,22 @@ that can be used to validate your incoming data.
 ```javascript
 // @@START_GENERATED_FUNCTIONS@@
 function isPersonMessage(resource) {
-  return ((resource.keys().hasAll(['name']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['name','email']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['name','phone']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['name','phone','email']) && resource.size() == 3)) &&
+  return resource.keys().hasAll(['name']) &&
+          (resource.keys().hasOnly(['name','phone','email'])) &&
           ((resource.name is string)) &&
           ((!resource.keys().hasAny(['email'])) || (resource.email is string)) &&
           ((!resource.keys().hasAny(['phone'])) || (isPerson_PhoneNumberMessage(resource.phone)));
 }
 function isPerson_PhoneNumberMessage(resource) {
-  return ((resource.keys().hasAll([]) && resource.size() == 0) ||
-          (resource.keys().hasAll(['number']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['type']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['type','number']) && resource.size() == 2)) &&
+  return resource.keys().hasAll([]) &&
+          (resource.keys().hasOnly(['type','number'])) &&
           ((!resource.keys().hasAny(['number'])) || (resource.number is string)) &&
           ((!resource.keys().hasAny(['type'])) || (isPerson_PhoneTypeEnum(resource.type)));
 }
 function isPerson_PhoneTypeEnum(resource) {
-  return resource == 'MOBILE' ||
-          resource == 'HOME' ||
-          resource == 'WORK';
+  return resource == 0 ||
+          resource == 1 ||
+          resource == 2;
 }
 // @@END_GENERATED_FUNCTIONS@@
 
@@ -161,22 +157,8 @@ This would generate the following functions.
 ```javascript
 // @@START_GENERATED_FUNCTIONS@@
 function istutorial_PersonMessage(resource) {
-  return ((resource.keys().hasAll([]) && resource.size() == 0) ||
-          (resource.keys().hasAll(['name']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['email']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['phone']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['starredWebsites']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['email','name']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['phone','name']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['starredWebsites','name']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['phone','email']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['starredWebsites','email']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['starredWebsites','phone']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['phone','email','name']) && resource.size() == 3) ||
-          (resource.keys().hasAll(['starredWebsites','email','name']) && resource.size() == 3) ||
-          (resource.keys().hasAll(['starredWebsites','phone','name']) && resource.size() == 3) ||
-          (resource.keys().hasAll(['starredWebsites','phone','email']) && resource.size() == 3) ||
-          (resource.keys().hasAll(['starredWebsites','phone','email','name']) && resource.size() == 4)) &&
+  return resource.keys().hasAll([]) &&
+          (resource.keys().hasOnly(['starredWebsites','phone','email','name'])) &&
           ((!resource.keys().hasAny(['name'])) || (resource.name is string)) &&
           ((!resource.keys().hasAny(['email'])) || (resource.email is string && (resource.email.matches('.*@domain\.com')))) &&
           ((!resource.keys().hasAny(['phone'])) || (istutorial_Person_PhoneNumberMessage(resource.phone))) &&
@@ -184,14 +166,14 @@ function istutorial_PersonMessage(resource) {
           (resource.keys().hasAny(['email', 'phone']));
 }
 function istutorial_Person_PhoneNumberMessage(resource) {
-  return ((resource.keys().hasAll([]))) &&
+  return resource.keys().hasAll([]) &&
           ((!resource.keys().hasAny(['number'])) || (resource.number is string)) &&
           ((!resource.keys().hasAny(['type'])) || (istutorial_Person_PhoneTypeEnum(resource.type)));
 }
 function istutorial_Person_PhoneTypeEnum(resource) {
-  return resource == 0 ||
-          resource == 1 ||
-          resource == 2;
+  return resource == 'MOBILE' ||
+          resource == 'HOME' ||
+          resource == 'WORK';
 }
 // @@END_GENERATED_FUNCTIONS@@
 

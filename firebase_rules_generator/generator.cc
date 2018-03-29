@@ -185,22 +185,19 @@ std::vector<std::vector<std::string>> AllFieldCombinations(
     const std::vector<std::string> &optional_fields,
     const std::vector<std::vector<std::string>> &oneof_fields) {
   std::vector<std::vector<std::string>> combos;
-
-  size_t max_optional_props = optional_fields.size() + oneof_fields.size();
   // Add all possible optional and oneof fields, throw out invalid combos before
   // adding to the final set.
   std::vector<std::string> all_opt_fields = optional_fields;
   for (const auto &oneof : oneof_fields) {
     all_opt_fields.insert(all_opt_fields.end(), oneof.begin(), oneof.end());
   }
-  for (size_t num_opts = 0; num_opts <= max_optional_props; ++num_opts) {
-    const auto &k_combos = GenerateAllKCombinations(all_opt_fields, num_opts);
-    for (const auto &combo : k_combos) {
-      std::vector<std::string> fields_combo = required_fields;  // Make a copy
-      fields_combo.insert(fields_combo.end(), combo.begin(), combo.end());
-      if (FieldsRespectOneOfs(fields_combo, oneof_fields)) {
-        combos.push_back(fields_combo);
-      }
+  size_t k = optional_fields.size() + oneof_fields.size();
+  const auto &k_combos = GenerateAllKCombinations(all_opt_fields, k);
+  for (const auto &combo : k_combos) {
+    std::vector<std::string> fields_combo = required_fields;  // Make a copy
+    fields_combo.insert(fields_combo.end(), combo.begin(), combo.end());
+    if (FieldsRespectOneOfs(fields_combo, oneof_fields)) {
+      combos.push_back(fields_combo);
     }
   }
   return combos;
@@ -259,27 +256,23 @@ bool RulesGenerator::GenerateMessage(const protobuf::Descriptor *message,
   const auto &required_fields = RequiredFields(message);
   const auto &optional_fields = OptionalFields(message);
   const auto &oneof_fields = OneOfFields(message);
-  auto combinations =
-      AllFieldCombinations(required_fields, optional_fields, oneof_fields);
-  if (options.has_extra_properties()) {
-    combinations.clear();
-    combinations.push_back(required_fields);
-  }
-  if (!combinations.empty()) printer.Print("(");
-  for (size_t i = 0; i < combinations.size(); ++i) {
-    const auto &combo = combinations[i];
-    printer.Print("(resource.keys().hasAll($properties$)", "properties",
-                  ToString(combo));
-    if (!options.has_extra_properties()) {
-      printer.Print(" && resource.size() == $count$)", "count",
-                    std::to_string(combo.size()));
-    } else {
-      printer.Print(")");
+  printer.Print("resource.keys().hasAll($properties$)", "properties",
+                ToString(required_fields));
+  if (!options.has_extra_properties()) {
+    auto combinations =
+        AllFieldCombinations(required_fields, optional_fields, oneof_fields);
+    if (!combinations.empty()) {
+      printer.Print(" &&\n(");
     }
-    if (IsLastIteration(i, combinations.size())) {
-      printer.Print(")");
-    } else {
-      printer.Print(" ||\n");
+    for (size_t i = 0; i < combinations.size(); ++i) {
+      const auto &combo = combinations[i];
+      printer.Print("resource.keys().hasOnly($properties$)", "properties",
+                    ToString(combo));
+      if (IsLastIteration(i, combinations.size())) {
+        printer.Print(")");
+      } else {
+        printer.Print(" ||\n");
+      }
     }
   }
   // Validate inner types

@@ -1,18 +1,14 @@
 // @@START_GENERATED_FUNCTIONS@@
 function isPersonMessage(resource) {
-  return ((resource.keys().hasAll(['name']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['name','email']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['name','phone']) && resource.size() == 2) ||
-          (resource.keys().hasAll(['name','phone','email']) && resource.size() == 3)) &&
+  return resource.keys().hasAll(['name']) &&
+          (resource.keys().hasOnly(['name','phone','email'])) &&
           ((resource.name is string)) &&
           ((!resource.keys().hasAny(['email'])) || (resource.email is string)) &&
           ((!resource.keys().hasAny(['phone'])) || (isPerson_PhoneNumberMessage(resource.phone)));
 }
 function isPerson_PhoneNumberMessage(resource) {
-  return ((resource.keys().hasAll([]) && resource.size() == 0) ||
-          (resource.keys().hasAll(['number']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['type']) && resource.size() == 1) ||
-          (resource.keys().hasAll(['type','number']) && resource.size() == 2)) &&
+  return resource.keys().hasAll([]) &&
+          (resource.keys().hasOnly(['type','number'])) &&
           ((!resource.keys().hasAny(['number'])) || (resource.number is string)) &&
           ((!resource.keys().hasAny(['type'])) || (isPerson_PhoneTypeEnum(resource.type)));
 }

@@ -1,0 +1,8 @@
+// @@START_GENERATED_FUNCTIONS@@
+function isRefExampleMessage(resource) {
+  return resource.keys().hasAll([]) &&
+          (resource.keys().hasOnly(['bar','foo'])) &&
+          ((!resource.keys().hasAny(['foo'])) || (resource.foo is path)) &&
+          ((!resource.keys().hasAny(['bar'])) || (resource.bar is string));
+}
+// @@END_GENERATED_FUNCTIONS@@

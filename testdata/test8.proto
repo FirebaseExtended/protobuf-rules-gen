@@ -1,0 +1,10 @@
+syntax = "proto3";
+package example;
+
+import "firebase_rules_options.proto";
+
+message RefExample {
+  string foo = 1
+      [(google.firebase.rules.firebase_rules_field).reference_type = true];
+  string bar = 2;
+}

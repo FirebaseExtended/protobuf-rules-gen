@@ -358,6 +358,11 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
   if (!field->is_repeated()) {
     std::map<std::string, std::string> vars;
     vars.insert({"name", field->json_name()});
+    if (options.reference_type() &&
+        field->type() != protobuf::FieldDescriptor::TYPE_STRING) {
+      *error = "references must be of type string";
+      return false;
+    }
     switch (field->type()) {
       case protobuf::FieldDescriptor::TYPE_DOUBLE:
       case protobuf::FieldDescriptor::TYPE_FLOAT:
@@ -420,6 +425,13 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
         printer.Print(vars, "resource.$name$ is $type$");
         break;
       case protobuf::FieldDescriptor::TYPE_STRING:
+        if (options.reference_type()) {
+          vars.insert({"type", "path"});
+        } else {
+          vars.insert({"type", "string"});
+        }
+        printer.Print(vars, "resource.$name$ is $type$");
+        break;
       case protobuf::FieldDescriptor::TYPE_BYTES:  // Base64 encoded strings.
         vars.insert({"type", "string"});
         printer.Print(vars, "resource.$name$ is $type$");

@@ -101,6 +101,11 @@ these steps:
     option
 4.  Invoke the `protoc` tool using the `--firebase_rules_out=./directory` flag
     to output your `firestore.rules` file with generated functions
+5.  If you're importing `"firebase_rules_options.proto"` like the below example
+    the `--proto_path=./directory` flag will need to be added to include the
+    directory of the `firebase_rules_options.proto` file along with the protobuf
+    files from [the `src` directory of the Google Protobuf repo](https://github.com/google/protobuf/tree/master/src).
+    An more indepth discussion of this can be found (in this issue)(https://github.com/firebase/protobuf-rules-gen/issues/16).
 
 If you run into trouble feel free to check out our
 [`example_usage.sh`](https://github.com/firebase/protobuf-rules-gen/blob/master/example_usage.sh)

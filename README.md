@@ -133,7 +133,7 @@ message Person {
                         "resource.email.matches('.*@domain\\.com')"];
 
   enum PhoneType {
-    option (google.firebase.rules.firebase_rules_enum).numberic_values = true;
+    option (google.firebase.rules.firebase_rules_enum).string_values = true;
     MOBILE = 0;
     HOME = 1;
     WORK = 2;

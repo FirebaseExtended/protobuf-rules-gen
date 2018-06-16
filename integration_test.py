@@ -22,29 +22,29 @@ import sys
 
 
 def check_proto_file(filename):
-    assert isinstance(filename, str) and filename.endswith(".proto"), filename
-    return filename
+  assert isinstance(filename, str) and filename.endswith(".proto"), filename
+  return filename
 
 
 def check_rules_file(filename):
-    assert isinstance(filename, str) and filename.endswith(".rules"), filename
-    return filename
+  assert isinstance(filename, str) and filename.endswith(".rules"), filename
+  return filename
 
 
 def read_file(filename):
-    with open(filename, 'r') as f:
-        return f.read()
+  with open(filename, "r") as f:
+    return f.read()
 
 
 def check_rules_output(test_file, expected, actual):
-    if expected != actual:
-        for line in difflib.unified_diff(
-                expected.splitlines(True),
-                actual.splitlines(True),
-                fromfile=test_file,
-                tofile="firestore.rules"):
-            sys.stderr.write(line)
-        sys.exit(1)
+  if expected != actual:
+    for line in difflib.unified_diff(
+        expected.splitlines(True),
+        actual.splitlines(True),
+        fromfile=test_file,
+        tofile="firestore.rules"):
+      sys.stderr.write(line)
+    sys.exit(1)
 
 
 output_dir = os.environ["TEST_UNDECLARED_OUTPUTS_DIR"]
@@ -57,28 +57,28 @@ testdata = sys.argv[5:]
 
 
 def run_testcase(proto_file, output):
-    test_protos = path.dirname(proto_file)
-    test_file = path.basename(proto_file)
-    subprocess.check_call(
-        [
-            protoc,
-            "--plugin=protoc-gen-firebase_rules=" + rules_plugin,
-            "--firebase_rules_out=" + output_dir,
-            "--proto_path=" + google_protos,
-            "--proto_path=" + firebase_protos,
-            "--proto_path=" + test_protos,
-            test_file,
-        ],
-        stderr=sys.stderr)
-    actual = read_file(output_dir + "/firestore.rules")
-    expected = read_file(output)
-    check_rules_output(path.basename(output), expected, actual)
+  test_protos = path.dirname(proto_file)
+  test_file = path.basename(proto_file)
+  subprocess.check_call(
+      [
+          protoc,
+          "--plugin=protoc-gen-firebase_rules=" + rules_plugin,
+          "--firebase_rules_out=" + output_dir,
+          "--proto_path=" + google_protos,
+          "--proto_path=" + firebase_protos,
+          "--proto_path=" + test_protos,
+          test_file,
+      ],
+      stderr=sys.stderr)
+  actual = read_file(output_dir + "/firestore.rules")
+  expected = read_file(output)
+  check_rules_output(path.basename(output), expected, actual)
 
 
 # Testcases should be <name>.proto as the input and <name>.rules as the output.
 testdata.sort()
 
 for i in xrange(0, len(testdata), 2):
-    proto_file = check_proto_file(testdata[i])
-    rules_out = check_rules_file(testdata[i + 1])
-    run_testcase(proto_file, rules_out)
+  proto_file = check_proto_file(testdata[i])
+  rules_out = check_rules_file(testdata[i + 1])
+  run_testcase(proto_file, rules_out)

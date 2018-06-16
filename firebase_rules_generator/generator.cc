@@ -440,8 +440,13 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
         *error = "Groups are not supported.";
         return false;
       case protobuf::FieldDescriptor::TYPE_MESSAGE:
-        vars.insert({"type", GetMessageName(field->message_type())});
-        printer.Print(vars, "is$type$Message(resource.$name$)");
+        if (field->message_type()->full_name() == "google.protobuf.Timestamp") {
+          vars.insert({"type", "timestamp"});
+          printer.Print(vars, "resource.$name$ is $type$");
+        } else {
+          vars.insert({"type", GetMessageName(field->message_type())});
+          printer.Print(vars, "is$type$Message(resource.$name$)");
+        }
         break;
       case protobuf::FieldDescriptor::TYPE_ENUM:
         vars.insert({"type", GetEnumName(field->enum_type())});

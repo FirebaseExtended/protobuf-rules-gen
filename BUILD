@@ -23,5 +23,6 @@ py_test(
         "//proto:firebase_rules_options_proto_file",
         "@com_google_protobuf//:descriptor_proto",
         "@com_google_protobuf//:protoc",
+        "@com_google_protobuf//:timestamp_proto",
     ],
 )

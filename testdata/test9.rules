@@ -1,0 +1,7 @@
+// @@START_GENERATED_FUNCTIONS@@
+function isExampleMessage(resource) {
+  return resource.keys().hasAll([]) &&
+          (resource.keys().hasOnly(['ts'])) &&
+          ((!resource.keys().hasAny(['ts'])) || (resource.ts is timestamp));
+}
+// @@END_GENERATED_FUNCTIONS@@

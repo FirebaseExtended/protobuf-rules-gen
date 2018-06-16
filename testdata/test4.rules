@@ -8,6 +8,6 @@ function isExampleMessage(resource) {
           ((!resource.keys().hasAny(['bar'])) || (resource.bar is map)) &&
           ((!resource.keys().hasAny(['bippity'])) || (resource.bippity is int && resource.bippity >= -2147483648 && resource.bippity <= 2147483647)) &&
           ((!resource.keys().hasAny(['boppity'])) || (resource.boppity is bool)) &&
-          ((!resource.keys().hasAny(['boo'])) || (resource.boo is float));
+          ((!resource.keys().hasAny(['boo'])) || (resource.boo is number));
 }
 // @@END_GENERATED_FUNCTIONS@@

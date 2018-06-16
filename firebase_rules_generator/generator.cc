@@ -367,7 +367,7 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
       case protobuf::FieldDescriptor::TYPE_DOUBLE:
       case protobuf::FieldDescriptor::TYPE_FLOAT:
         // TODO(rockwood): Do we need anything special for "Nan" or "Infinity"?
-        vars.insert({"type", "float"});
+        vars.insert({"type", "number"});
         printer.Print(vars, "resource.$name$ is $type$");
         break;
       case protobuf::FieldDescriptor::TYPE_INT64:

@@ -7,11 +7,13 @@ import "google/protobuf/descriptor.proto";
 message RulesMessageOptions {
   optional string validate = 1;
   optional bool extra_properties = 2 [default = false];
+  optional bool nullable = 3 [default = false];
 }
 
 message RulesFieldOptions {
   optional string validate = 1;
   optional bool reference_type = 2 [default = false];
+  optional bool nullable = 3 [default = false];
 }
 
 message RulesFileOptions {

@@ -1,9 +1,0 @@
-// @@START_GENERATED_FUNCTIONS@@
-function isExampleMessage(resource) {
-  return resource.keys().hasAll([]) &&
-          (resource.keys().hasOnly(['baz','bar','foo'])) &&
-          ((!resource.keys().hasAny(['foo'])) || (resource.foo is string)) &&
-          ((!resource.keys().hasAny(['bar'])) || (resource.bar is string)) &&
-          ((!resource.keys().hasAny(['baz'])) || (resource.baz is string));
-}
-// @@END_GENERATED_FUNCTIONS@@

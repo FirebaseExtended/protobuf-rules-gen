@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package example;
+
+import "firebase_rules_options.proto";
+
+message NullableExample {
+  string foo = 1;
+  string bar = 2
+      [(google.firebase.rules.firebase_rules_field).nullable = false];
+  option (google.firebase.rules.firebase_rules_message).nullable = true;
+}
+
+message Example {
+  string foo = 1;
+  string bar = 2 [(google.firebase.rules.firebase_rules_field).nullable = true];
+}

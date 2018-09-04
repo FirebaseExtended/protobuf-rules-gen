@@ -457,7 +457,15 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
   if (options.has_validate()) {
     printer.Print(" && ($validate$)", "validate", options.validate());
   }
-  printer.Print("))");
+  printer.Print(")");
+  const auto &msg_options =
+      field->containing_type()->options().GetExtension(firebase_rules_message);
+  bool nullable =
+      (!options.has_nullable() && msg_options.nullable()) || options.nullable();
+  if (nullable) {
+    printer.Print(" || resource.$name$ is null", "name", field->json_name());
+  }
+  printer.Print(")");
   return true;
 }
 

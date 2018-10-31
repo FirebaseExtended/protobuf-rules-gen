@@ -16,6 +16,7 @@ cc_library(
     name = "generator",
     srcs = ["generator.cc"],
     hdrs = ["generator.h"],
+    visibility = ["//visibility:public"],
     deps = [
         ":firebase_rules_options",
         "@com_google_protobuf//:protobuf",
@@ -38,4 +39,5 @@ cc_binary(
 cc_proto_library(
     name = "firebase_rules_options",
     deps = ["//proto:firebase_rules_options_proto"],
+    visibility = ["//visibility:public"],
 )

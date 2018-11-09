@@ -38,6 +38,6 @@ cc_binary(
 
 cc_proto_library(
     name = "firebase_rules_options",
-    deps = ["//proto:firebase_rules_options_proto"],
     visibility = ["//visibility:public"],
+    deps = ["//proto:firebase_rules_options_proto"],
 )

@@ -203,9 +203,9 @@ It's easy to use protobuf_rules_gen if your project already uses Bazel.
 ```python
 http_archive(
     name = "proto_gen_firebase_rules",
-    sha256 = "SHA256",
-    strip_prefix = "protobuf-rules-gen-COMMIT",
-    url = "http://github.com/FirebaseExtended/protobuf-rules-gen/archive/COMMIT.tar.gz",
+    sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    strip_prefix = "protobuf-rules-gen-6a95a4d6520281bdb28ce486110287b62a34e03d",
+    url = "http://github.com/FirebaseExtended/protobuf-rules-gen/archive/6a95a4d6520281bdb28ce486110287b62a34e03d.tar.gz",
 )
 
 load("@proto_gen_firebase_rules//:repositories.bzl", "protobuf_rules_gen_repositories")

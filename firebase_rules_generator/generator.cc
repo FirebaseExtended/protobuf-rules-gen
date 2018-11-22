@@ -463,7 +463,7 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
   bool nullable =
       (!options.has_nullable() && msg_options.nullable()) || options.nullable();
   if (nullable) {
-    printer.Print(" || resource.$name$ is null", "name", field->json_name());
+    printer.Print(" || resource.$name$ == null", "name", field->json_name());
   }
   printer.Print(")");
   return true;

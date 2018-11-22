@@ -2,13 +2,13 @@
 function isNullableExampleMessage(resource) {
   return resource.keys().hasAll([]) &&
           (resource.keys().hasOnly(['bar','foo'])) &&
-          ((!resource.keys().hasAny(['foo'])) || (resource.foo is string) || resource.foo is null) &&
+          ((!resource.keys().hasAny(['foo'])) || (resource.foo is string) || resource.foo == null) &&
           ((!resource.keys().hasAny(['bar'])) || (resource.bar is string));
 }
 function isExampleMessage(resource) {
   return resource.keys().hasAll([]) &&
           (resource.keys().hasOnly(['bar','foo'])) &&
           ((!resource.keys().hasAny(['foo'])) || (resource.foo is string)) &&
-          ((!resource.keys().hasAny(['bar'])) || (resource.bar is string) || resource.bar is null);
+          ((!resource.keys().hasAny(['bar'])) || (resource.bar is string) || resource.bar == null);
 }
 // @@END_GENERATED_FUNCTIONS@@

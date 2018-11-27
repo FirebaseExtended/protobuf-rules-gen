@@ -1,4 +1,5 @@
-load("@proto_gen_firebase_rules//:defs.bzl", "firestore_rules_proto_library", "firestore_rules_binary")
+load("@build_bazel_rules_nodejs//:defs.bzl", "jasmine_node_test")
+load("@proto_gen_firebase_rules//:bazel/defs.bzl", "firestore_rules_proto_library", "firestore_rules_binary")
 
 firestore_rules_proto_library(
     name = "schema",
@@ -9,4 +10,7 @@ firestore_rules_binary(
     name = "example",
     srcs = ["main.rules"],
     deps = [":schema"],
+    visibility = ["//visibility:public"],
 )
+
+exports_files(["testdata/golden.rules"])

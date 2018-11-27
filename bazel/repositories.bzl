@@ -41,3 +41,4 @@ proto_gen(
         strip_prefix = "protobuf-%s/src" % (protobuf_commit,),
         urls = ["https://github.com/google/protobuf/archive/%s.tar.gz" % (protobuf_commit,)],
     )
+

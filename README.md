@@ -201,28 +201,29 @@ It's easy to use protobuf_rules_gen if your project already uses Bazel.
 1) Add protobuf_rules_gen to your WORKSPACE:
 
 ```python
+proto_gen_firebase_rules_commit = "TODO"
 http_archive(
     name = "proto_gen_firebase_rules",
-    sha256 = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    strip_prefix = "protobuf-rules-gen-6a95a4d6520281bdb28ce486110287b62a34e03d",
-    url = "http://github.com/FirebaseExtended/protobuf-rules-gen/archive/6a95a4d6520281bdb28ce486110287b62a34e03d.tar.gz",
+    sha256 = "TODO",
+    strip_prefix = "protobuf-rules-gen-" + proto_gen_firebase_rules_commit,
+    url = "http://github.com/FirebaseExtended/protobuf-rules-gen/archive/" + proto_gen_firebase_rules_commit + ".tar.gz",
 )
 
-load("@proto_gen_firebase_rules//:repositories.bzl", "protobuf_rules_gen_repositories")
+load("@proto_gen_firebase_rules//:bazel/repositories.bzl", "protobuf_rules_gen_repositories")
 protobuf_rules_gen_repositories()
 ```
 
 2) Update your BUILD file:
 ```python
-load("@proto_gen_firebase_rules//:defs.bzl", "firestore_rules_proto_library", "firestore_rules_binary")
+load("@proto_gen_firebase_rules//:bazel/defs.bzl", "firestore_rules_proto_library", "firestore_rules_binary")
 ```
 
 There are three rules available:
-    - firestore_rules_proto_library generates a .rules file from the protobuf
+    * firestore_rules_proto_library generates a .rules file from the protobuf
       schema
-    - firestore_rules_binary combines multiple .rules files (e.g. the auto
+    * firestore_rules_binary combines multiple .rules files (e.g. the auto
       generated rules with your ACLs that use them)
-    - firestore_rules_library wraps up one or more .rules files so that a 
+    * firestore_rules_library wraps up one or more .rules files so that a 
       firestore_rules_binary can depend on it.
 
 See example/BUILD for an example of how to use these rules.

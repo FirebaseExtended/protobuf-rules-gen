@@ -15,9 +15,13 @@ py_test(
         "$(location @com_google_protobuf//:protoc)",
         "$(location //proto:firebase_rules_options_proto_file)",
         "$(location @com_google_protobuf//:descriptor_proto)",
+        "$(location //example:example.rules)",
+        "$(location //example:testdata/golden.rules)",
         "$(locations :testdata)",
     ],
     data = [
+        "//example:testdata/golden.rules",
+        "//example:example.rules",
         ":testdata",
         "//firebase_rules_generator:protoc-gen-firebase_rules",
         "//proto:firebase_rules_options_proto_file",

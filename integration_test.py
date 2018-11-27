@@ -53,7 +53,10 @@ rules_plugin, protoc = sys.argv[1], sys.argv[2]
 firebase_protos = path.dirname(sys.argv[3])
 google_protos = path.dirname(sys.argv[4])
 
-testdata = sys.argv[5:]
+example_rules = sys.argv[5]
+example_golden = sys.argv[6]
+
+testdata = sys.argv[7:]
 
 
 def run_testcase(proto_file, output):
@@ -82,3 +85,9 @@ for i in xrange(0, len(testdata), 2):
   proto_file = check_proto_file(testdata[i])
   rules_out = check_rules_file(testdata[i + 1])
   run_testcase(proto_file, rules_out)
+
+
+check_rules_output(
+    'example.rules',
+    read_file(example_golden),
+    read_file(example_rules))

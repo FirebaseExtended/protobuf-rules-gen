@@ -1,4 +1,3 @@
-load("@build_bazel_rules_nodejs//:defs.bzl", "jasmine_node_test")
 load("@proto_gen_firebase_rules//:bazel/defs.bzl", "firestore_rules_proto_library", "firestore_rules_binary")
 
 firestore_rules_proto_library(

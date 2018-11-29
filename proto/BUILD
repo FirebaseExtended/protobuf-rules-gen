@@ -24,5 +24,12 @@ proto_gen(
     ],
     protoc = "@com_google_protobuf//:protoc",
     visibility = ["//visibility:public"],
-    deps = ["@com_google_protobuf_well_known_protos//:protos"],
+    deps = [":well_known_protos"],
+)
+
+proto_gen(
+    name = "well_known_protos",
+    srcs = ["@com_google_protobuf//:well_known_protos"],
+    protoc = "@com_google_protobuf//:protoc",
+    visibility = ["//visibility:public"],
 )

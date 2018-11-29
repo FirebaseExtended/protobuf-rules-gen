@@ -83,3 +83,4 @@ def firestore_rules_proto_library(
         deps = deps,
         **kargs
     )
+    

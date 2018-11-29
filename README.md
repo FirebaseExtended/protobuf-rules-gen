@@ -209,13 +209,13 @@ http_archive(
     url = "http://github.com/FirebaseExtended/protobuf-rules-gen/archive/" + proto_gen_firebase_rules_commit + ".tar.gz",
 )
 
-load("@proto_gen_firebase_rules//:bazel/repositories.bzl", "protobuf_rules_gen_repositories")
+load("@proto_gen_firebase_rules//bazel:repositories.bzl", "protobuf_rules_gen_repositories")
 protobuf_rules_gen_repositories()
 ```
 
 2) Update your BUILD file:
 ```python
-load("@proto_gen_firebase_rules//:bazel/defs.bzl", "firestore_rules_proto_library", "firestore_rules_binary")
+load("@proto_gen_firebase_rules//bazel:defs.bzl", "firestore_rules_proto_library", "firestore_rules_binary")
 ```
 
 There are three rules available:

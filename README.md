@@ -219,11 +219,11 @@ load("@proto_gen_firebase_rules//bazel:defs.bzl", "firestore_rules_proto_library
 ```
 
 There are three rules available:
-    * firestore_rules_proto_library generates a .rules file from the protobuf
+-  firestore_rules_proto_library generates a .rules file from the protobuf
       schema
-    * firestore_rules_binary combines multiple .rules files (e.g. the auto
+- firestore_rules_binary combines multiple .rules files (e.g. the auto
       generated rules with your ACLs that use them)
-    * firestore_rules_library wraps up one or more .rules files so that a 
+- firestore_rules_library wraps up one or more .rules files so that a 
       firestore_rules_binary can depend on it.
 
 See example/BUILD for an example of how to use these rules.

@@ -11,5 +11,3 @@ firestore_rules_binary(
     deps = [":schema"],
     visibility = ["//visibility:public"],
 )
-
-exports_files(["testdata/golden.rules"])

@@ -25,6 +25,9 @@
 
 #define RULES_FILE "firestore.rules"
 
+using google::protobuf::StrCat;
+using google::protobuf::StripSuffixString;
+
 namespace google {
 namespace firebase {
 namespace rules {
@@ -214,7 +217,14 @@ bool RulesGenerator::Generate(const protobuf::FileDescriptor *file,
                               const std::string &parameter,
                               protobuf::compiler::GeneratorContext *context,
                               std::string *error) const {
-  protobuf::io::Printer printer(context->Open(RULES_FILE), '$');
+  std::string filename;
+  if (parameter == "bazel") {
+    filename = StrCat(StripSuffixString(file->name(), ".proto"),
+                 ".pb.rules");
+  } else {
+    filename = RULES_FILE;
+  }
+  protobuf::io::Printer printer(context->Open(filename), '$');
 
   // Start by adding a comment
   printer.Print("// @@START_GENERATED_FUNCTIONS@@\n");

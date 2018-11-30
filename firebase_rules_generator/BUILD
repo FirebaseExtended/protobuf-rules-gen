@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+package(default_visibility = ["//visibility:public"])
+
 cc_library(
     name = "generator",
     srcs = ["generator.cc"],
@@ -27,7 +29,6 @@ cc_binary(
     name = "protoc-gen-firebase_rules",
     srcs = ["main.cc"],
     linkstatic = 1,
-    visibility = ["//visibility:public"],
     deps = [
         ":generator",
         "@com_google_protobuf//:protobuf",

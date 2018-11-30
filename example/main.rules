@@ -1,0 +1,9 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if isPersonMessage(request.resource.data) &&
+                      request.auth.uid == userId;
+    }
+  }
+}

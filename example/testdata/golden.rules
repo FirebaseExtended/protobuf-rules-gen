@@ -1,0 +1,29 @@
+// @@START_GENERATED_FUNCTIONS@@
+function isPersonMessage(resource) {
+  return resource.keys().hasAll([]) &&
+          (resource.keys().hasOnly(['phone','email','name'])) &&
+          ((!resource.keys().hasAny(['name'])) || (resource.name is string)) &&
+          ((!resource.keys().hasAny(['email'])) || (resource.email is string)) &&
+          ((!resource.keys().hasAny(['phone'])) || (isPerson_PhoneNumberMessage(resource.phone)));
+}
+function isPerson_PhoneNumberMessage(resource) {
+  return resource.keys().hasAll([]) &&
+          (resource.keys().hasOnly(['type','number'])) &&
+          ((!resource.keys().hasAny(['number'])) || (resource.number is string)) &&
+          ((!resource.keys().hasAny(['type'])) || (isPerson_PhoneTypeEnum(resource.type)));
+}
+function isPerson_PhoneTypeEnum(resource) {
+  return resource == 0 ||
+          resource == 1 ||
+          resource == 2;
+}
+// @@END_GENERATED_FUNCTIONS@@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /users/{userId} {
+      allow read: if true;
+      allow write: if isPersonMessage(request.resource.data) &&
+                      request.auth.uid == userId;
+    }
+  }
+}

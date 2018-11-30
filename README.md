@@ -185,7 +185,7 @@ function istutorial_Person_PhoneTypeEnum(resource) {
 // Start your rules...
 ```
 
-## Building
+## Standalone usage
 
 1) Install [Bazel](http://www.bazel.io/docs/install.html).
 
@@ -193,6 +193,41 @@ function istutorial_Person_PhoneTypeEnum(resource) {
 
 3) A sample invocation of the plugin, `protoc-gen-firebase_rules`, is available
 in `example_usage.sh`. This script can be run from the command line.
+
+## Using with bazel
+
+It's easy to use protobuf_rules_gen if your project already uses Bazel.
+
+1) Add protobuf_rules_gen to your WORKSPACE:
+
+```python
+proto_gen_firebase_rules_commit = "TODO"
+http_archive(
+    name = "proto_gen_firebase_rules",
+    sha256 = "TODO",
+    strip_prefix = "protobuf-rules-gen-" + proto_gen_firebase_rules_commit,
+    url = "http://github.com/FirebaseExtended/protobuf-rules-gen/archive/" + proto_gen_firebase_rules_commit + ".tar.gz",
+)
+
+load("@proto_gen_firebase_rules//bazel:repositories.bzl", "protobuf_rules_gen_repositories")
+protobuf_rules_gen_repositories()
+```
+
+2) Update your BUILD file:
+```python
+load("@proto_gen_firebase_rules//bazel:defs.bzl", "firestore_rules_proto_library", "firestore_rules_binary")
+```
+
+There are three rules available:
+-  firestore_rules_proto_library generates a .rules file from the protobuf
+      schema
+- firestore_rules_binary combines multiple .rules files (e.g. the auto
+      generated rules with your ACLs that use them)
+- firestore_rules_library wraps up one or more .rules files so that a 
+      firestore_rules_binary can depend on it.
+
+See example/BUILD for an example of how to use these rules.
+
 
 ## Releasing
 

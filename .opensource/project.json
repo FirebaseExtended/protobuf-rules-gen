@@ -1,0 +1,19 @@
+
+{
+    "name": "Firebase Rules Protobuf Validation",
+    "platforms": [
+      "Tools"
+    ],
+    "content": "README.md",
+    "related": [],
+    "tabs": [
+      { 
+        "title": "Security Rules", 
+        "href": "https://firebase.google.com/docs/firestore/security/overview" 
+      },
+      {
+        "title": "Protocol Buffers",
+        "href": "https://developers.google.com/protocol-buffers/"
+      }
+    ]
+  }

@@ -29,4 +29,5 @@ py_test(
         "@com_google_protobuf//:protoc",
         "@com_google_protobuf//:timestamp_proto",
     ],
+    python_version = "PY2",
 )

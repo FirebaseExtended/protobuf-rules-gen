@@ -90,43 +90,6 @@ std::string GetEnumName(const protobuf::EnumDescriptor *enumeration) {
   }
 }
 
-std::vector<std::string> RequiredFields(const protobuf::Descriptor *message) {
-  std::vector<std::string> required;
-  for (int i = 0; i < message->field_count(); ++i) {
-    const auto *field = message->field(i);
-    if (field->is_required() && field->containing_oneof() == nullptr) {
-      required.push_back(field->json_name());
-    }
-  }
-  return required;
-}
-
-std::vector<std::string> OptionalFields(const protobuf::Descriptor *message) {
-  std::vector<std::string> optional;
-  for (int i = 0; i < message->field_count(); ++i) {
-    const auto *field = message->field(i);
-    if ((field->is_optional() || field->is_repeated()) &&
-        field->containing_oneof() == nullptr) {
-      optional.push_back(field->json_name());
-    }
-  }
-  return optional;
-}
-
-std::vector<std::vector<std::string>> OneOfFields(
-    const protobuf::Descriptor *message) {
-  std::vector<std::vector<std::string>> oneofs;
-  for (int i = 0; i < message->oneof_decl_count(); ++i) {
-    std::vector<std::string> oneof_names;
-    const auto *oneof_decl = message->oneof_decl(i);
-    for (int j = 0; j < oneof_decl->field_count(); ++j) {
-      oneof_names.push_back(oneof_decl->field(j)->json_name());
-    }
-    oneofs.push_back(oneof_names);
-  }
-  return oneofs;
-}
-
 std::string ToString(std::vector<std::string> vec) {
   std::string result = "[";
   for (const auto &elem : vec) {
@@ -213,17 +176,19 @@ bool IsLastIteration(S idx, S size) {
 
 }  // namespace
 
+std::string RulesGenerator::RulesFilename(const protobuf::FileDescriptor *file, const std::string &parameter) const {
+  if (parameter == "bazel") {
+    return StrCat(StripSuffixString(file->name(), ".proto"), ".pb.rules");
+  } else {
+    return RULES_FILE;
+  }
+}
+
 bool RulesGenerator::Generate(const protobuf::FileDescriptor *file,
                               const std::string &parameter,
                               protobuf::compiler::GeneratorContext *context,
                               std::string *error) const {
-  std::string filename;
-  if (parameter == "bazel") {
-    filename = StrCat(StripSuffixString(file->name(), ".proto"),
-                 ".pb.rules");
-  } else {
-    filename = RULES_FILE;
-  }
+  std::string filename = RulesFilename(file, parameter);
   protobuf::io::Printer printer(context->Open(filename), '$');
 
   // Start by adding a comment
@@ -286,12 +251,13 @@ bool RulesGenerator::GenerateMessage(const protobuf::Descriptor *message,
     }
   }
   // Validate inner types
-  if (message->field_count() > 0) printer.Print(" &&\n");
-  for (int i = 0; i < message->field_count(); ++i) {
-    if (!GenerateField(message->field(i), printer, error)) {
+  const auto &all_fields = AllFields(message);
+  if (all_fields.size() > 0) printer.Print(" &&\n");
+  for (size_t i = 0; i < all_fields.size(); ++i) {
+    if (!GenerateField(all_fields[i], printer, error)) {
       return false;
     }
-    if (!IsLastIteration(i, message->field_count())) {
+    if (!IsLastIteration(i, all_fields.size())) {
       printer.Print(" &&\n");
     }
   }
@@ -345,6 +311,21 @@ bool RulesGenerator::GenerateEnum(const protobuf::EnumDescriptor *enumeration,
   return true;
 }
 
+bool RulesGenerator::IsNullableField(
+    const protobuf::FieldDescriptor *field) const {
+  const auto &options = field->options().GetExtension(firebase_rules_field);
+  const auto &msg_options =
+      field->containing_type()->options().GetExtension(firebase_rules_message);
+  return (!options.has_nullable() && msg_options.nullable()) ||
+         options.nullable();
+}
+
+bool RulesGenerator::IsReferenceField(
+    const protobuf::FieldDescriptor *field) const {
+  const auto &options = field->options().GetExtension(firebase_rules_field);
+  return options.reference_type();
+}
+
 bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
                                    protobuf::io::Printer &printer,
                                    std::string *error) const {
@@ -368,9 +349,10 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
   if (!field->is_repeated()) {
     std::map<std::string, std::string> vars;
     vars.insert({"name", field->json_name()});
-    if (options.reference_type() &&
-        field->type() != protobuf::FieldDescriptor::TYPE_STRING) {
-      *error = "references must be of type string";
+    if (IsReferenceField(field) &&
+        !(field->type() == protobuf::FieldDescriptor::TYPE_STRING||
+        field->type() == protobuf::FieldDescriptor::TYPE_MESSAGE)) {
+      *error = "references must be of type string or message";
       return false;
     }
     switch (field->type()) {
@@ -435,7 +417,7 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
         printer.Print(vars, "resource.$name$ is $type$");
         break;
       case protobuf::FieldDescriptor::TYPE_STRING:
-        if (options.reference_type()) {
+        if (IsReferenceField(field)) {
           vars.insert({"type", "path"});
         } else {
           vars.insert({"type", "string"});
@@ -453,6 +435,9 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
         if (field->message_type()->full_name() == "google.protobuf.Timestamp") {
           vars.insert({"type", "timestamp"});
           printer.Print(vars, "resource.$name$ is $type$");
+        } else if (IsReferenceField(field)) {
+          vars.insert({"type", "path"});
+          printer.Print(vars, "resource.$name$ is $type$");
         } else {
           vars.insert({"type", GetMessageName(field->message_type())});
           printer.Print(vars, "is$type$Message(resource.$name$)");
@@ -468,16 +453,13 @@ bool RulesGenerator::GenerateField(const protobuf::FieldDescriptor *field,
     printer.Print(" && ($validate$)", "validate", options.validate());
   }
   printer.Print(")");
-  const auto &msg_options =
-      field->containing_type()->options().GetExtension(firebase_rules_message);
-  bool nullable =
-      (!options.has_nullable() && msg_options.nullable()) || options.nullable();
-  if (nullable) {
+
+  if (IsNullableField(field)) {
     printer.Print(" || resource.$name$ == null", "name", field->json_name());
   }
   printer.Print(")");
   return true;
-}
+}  // namespace experimental
 
 bool RulesGenerator::GenerateMap(const protobuf::FieldDescriptor *map_field,
                                  protobuf::io::Printer &printer,
@@ -505,6 +487,59 @@ bool RulesGenerator::GenerateMap(const protobuf::FieldDescriptor *map_field,
   // that :(
   printer.Print("resource.$name$ is map", "name", map_field->json_name());
   return true;
+}
+
+std::vector<std::string> RulesGenerator::RequiredFields(
+    const protobuf::Descriptor *message) const {
+  std::vector<std::string> required;
+  for (int i = 0; i < message->field_count(); ++i) {
+    const auto *field = message->field(i);
+    if (field->is_required() && field->containing_oneof() == nullptr &&
+        !IgnoreField(field)) {
+      required.push_back(field->json_name());
+    }
+  }
+  return required;
+}
+
+std::vector<std::string> RulesGenerator::OptionalFields(
+    const protobuf::Descriptor *message) const {
+  std::vector<std::string> optional;
+  for (int i = 0; i < message->field_count(); ++i) {
+    const auto *field = message->field(i);
+    if ((field->is_optional() || field->is_repeated()) &&
+        field->containing_oneof() == nullptr && !IgnoreField(field)) {
+      optional.push_back(field->json_name());
+    }
+  }
+  return optional;
+}
+
+std::vector<std::vector<std::string>> RulesGenerator::OneOfFields(
+    const protobuf::Descriptor *message) const {
+  std::vector<std::vector<std::string>> oneofs;
+  for (int i = 0; i < message->oneof_decl_count(); ++i) {
+    std::vector<std::string> oneof_names;
+    const auto *oneof_decl = message->oneof_decl(i);
+    for (int j = 0; j < oneof_decl->field_count(); ++j) {
+      if (!IgnoreField(oneof_decl->field(j))) {
+        oneof_names.push_back(oneof_decl->field(j)->json_name());
+      }
+    }
+    oneofs.push_back(oneof_names);
+  }
+  return oneofs;
+}
+
+std::vector<const protobuf::FieldDescriptor *> RulesGenerator::AllFields(
+    const protobuf::Descriptor *message) const {
+  std::vector<const protobuf::FieldDescriptor *> fields;
+  for (int i = 0; i < message->field_count(); ++i) {
+    const auto *field = message->field(i);
+    if (IgnoreField(field)) continue;
+    fields.push_back(field);
+  }
+  return fields;
 }
 
 }  // namespace experimental

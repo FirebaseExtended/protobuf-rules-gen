@@ -9,8 +9,11 @@ This is an *experimental* plugin for Security Rules, which means you should
 __always__ validate these by hand before you decide to deploy these to a
 production environment.
 
-All support is handled through this repo, so if you've got a question or
-problem, [file an issue](https://github.com/firebase/protobuf-rules-gen/issues)!
+## Status
+
+![Status: Experimental](https://img.shields.io/badge/Status-Experimental-blue)
+
+This repository is maintained by Googlers but is not a supported Firebase product. Issues here are answered by maintainers and other community members on GitHub on a best-effort basis.
 
 ## Introduction
 

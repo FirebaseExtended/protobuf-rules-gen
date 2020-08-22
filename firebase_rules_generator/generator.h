@@ -38,6 +38,16 @@ class RulesGenerator : public protobuf::compiler::CodeGenerator {
                 protobuf::compiler::GeneratorContext* context,
                 std::string* error) const override;
 
+  virtual std::string RulesFilename(const protobuf::FileDescriptor *file, const std::string &parameter) const;
+
+  virtual bool IgnoreField(const protobuf::FieldDescriptor* field) const {
+    return false;
+  }
+
+  virtual bool IsNullableField(const protobuf::FieldDescriptor* field) const;
+
+  virtual bool IsReferenceField(const protobuf::FieldDescriptor* field) const;
+
  private:
   bool GenerateMessage(const protobuf::Descriptor* message,
                        protobuf::io::Printer& printer,
@@ -54,6 +64,18 @@ class RulesGenerator : public protobuf::compiler::CodeGenerator {
 
   bool GenerateMap(const protobuf::FieldDescriptor* map_field,
                    protobuf::io::Printer& printer, std::string* error) const;
+
+  std::vector<std::string> RequiredFields(
+      const protobuf::Descriptor* message) const;
+
+  std::vector<std::string> OptionalFields(
+      const protobuf::Descriptor* message) const;
+
+  std::vector<std::vector<std::string>> OneOfFields(
+      const protobuf::Descriptor* message) const;
+
+  std::vector<const protobuf::FieldDescriptor*> AllFields(
+      const protobuf::Descriptor* message) const;
 };
 
 }  // namespace experimental

@@ -1,0 +1,3 @@
+common --incompatible_disable_deprecated_attr_params=false
+common --incompatible_no_support_tools_in_action_inputs=false
+common --incompatible_new_actions_api=false

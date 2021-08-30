@@ -56,7 +56,7 @@ def firestore_rules_proto_library(
       **kargs: other keyword arguments that are passed to ts_library.
 
     """
-    outs = _outputs(srcs, ".rules")
+    outs = _outputs(srcs, ".cc")
 
     includes = []
     if include != None:
@@ -75,6 +75,7 @@ def firestore_rules_proto_library(
         plugin = plugin,
         plugin_language = "protoc-gen-firebase_rules",
         plugin_options = ["bazel"],
+        gen_cc = True
     )
 
     firestore_rules_library(

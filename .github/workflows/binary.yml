@@ -3,7 +3,7 @@ name: Binary
 on:
   release:
     types:
-      - created
+      - published
 
 jobs:
   build:
